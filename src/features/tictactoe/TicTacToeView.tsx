@@ -73,6 +73,7 @@ function minimax(board: Cell[], current: Mark, ai: Mark, depth: number): { score
 }
 
 export function TicTacToeView() {
+  const [mode, setMode] = useState<'CPU' | '2P'>('CPU')
   const [player, setPlayer] = useState<Mark>('X')
   const [board, setBoard] = useState<Cell[]>(Array.from({ length: 9 }, () => null))
   const [turn, setTurn] = useState<Mark>('X')
@@ -84,6 +85,7 @@ export function TicTacToeView() {
   const draw = useMemo(() => !w && isFull(board), [w, board])
 
   useEffect(() => {
+    if (mode !== 'CPU') return
     if (w || draw) return
     if (turn !== cpu) return
     setLocked(true)
@@ -109,7 +111,7 @@ export function TicTacToeView() {
     }, 260)
 
     return () => window.clearTimeout(t)
-  }, [turn, cpu, player, board, w, draw, difficulty])
+  }, [turn, cpu, player, board, w, draw, difficulty, mode])
 
   function reset(nextPlayer?: Mark) {
     const p = nextPlayer ?? player
@@ -122,25 +124,51 @@ export function TicTacToeView() {
   function clickCell(i: number) {
     if (locked) return
     if (w || draw) return
-    if (turn !== player) return
     if (board[i] != null) return
+    if (mode === 'CPU') {
+      if (turn !== player) return
+      setBoard((b) => {
+        const next = b.slice()
+        next[i] = player
+        return next
+      })
+      setTurn(cpu)
+      return
+    }
+
+    // 2-player local mode: alternate marks each turn
     setBoard((b) => {
       const next = b.slice()
-      next[i] = player
+      next[i] = turn
       return next
     })
-    setTurn(cpu)
+    setTurn((t) => other(t))
   }
 
-  const status = w
-    ? w.win === player
-      ? 'You win.'
-      : 'CPU wins.'
-    : draw
-      ? 'Draw.'
-      : turn === player
-        ? 'Your turn.'
-        : 'CPU thinking…'
+  const status =
+    mode === 'CPU'
+      ? w
+        ? w.win === player
+          ? 'You win.'
+          : 'CPU wins.'
+        : draw
+          ? 'Draw.'
+          : turn === player
+            ? 'Your turn.'
+            : 'CPU thinking…'
+      : w
+        ? `${w.win} wins.`
+        : draw
+          ? 'Draw.'
+          : `Turn: ${turn}`
+
+  function changeMode(next: 'CPU' | '2P') {
+    setMode(next)
+    // Always reset the board when switching modes
+    setBoard(Array.from({ length: 9 }, () => null))
+    setTurn('X')
+    setLocked(false)
+  }
 
   return (
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_360px]">
@@ -182,45 +210,83 @@ export function TicTacToeView() {
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-          <span>
-            You: <span className="font-semibold text-zinc-200">{player}</span>
-          </span>
-          <span>•</span>
-          <span>
-            CPU: <span className="font-semibold text-zinc-200">{cpu}</span>
-          </span>
+          {mode === 'CPU' ? (
+            <>
+              <span>
+                You: <span className="font-semibold text-zinc-200">{player}</span>
+              </span>
+              <span>•</span>
+              <span>
+                CPU: <span className="font-semibold text-zinc-200">{cpu}</span>
+              </span>
+            </>
+          ) : (
+            <>
+              <span>
+                Player 1: <span className="font-semibold text-zinc-200">X</span>
+              </span>
+              <span>•</span>
+              <span>
+                Player 2: <span className="font-semibold text-zinc-200">O</span>
+              </span>
+            </>
+          )}
         </div>
       </div>
 
       <div className="gt-card p-5 sm:p-6">
-        <div className="text-sm font-semibold text-zinc-100">CPU</div>
-        <div className="mt-2 text-sm text-zinc-400">
-          Choose between a perfect “Smart” CPU (unbeatable) or a more relaxed “Chill” CPU that occasionally plays a random
-          move.
-        </div>
-
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          {(['Smart', 'Chill'] as const).map((d) => (
+        <div className="text-sm font-semibold text-zinc-100">Mode</div>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {(['CPU', '2P'] as const).map((m) => (
             <button
-              key={d}
+              key={m}
               type="button"
-              onClick={() => setDifficulty(d)}
+              onClick={() => changeMode(m)}
               className={[
                 'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
-                difficulty === d
+                mode === m
                   ? 'border-fuchsia-400/30 bg-fuchsia-500/15'
                   : 'border-white/10 bg-white/5 hover:bg-white/10',
               ].join(' ')}
             >
-              {d}
+              {m === 'CPU' ? 'Vs CPU' : '2 players'}
             </button>
           ))}
         </div>
 
+        {mode === 'CPU' && (
+          <>
+            <div className="mt-6 text-sm font-semibold text-zinc-100">CPU difficulty</div>
+            <div className="mt-2 text-sm text-zinc-400">
+              Choose between a perfect “Smart” CPU (unbeatable) or a more relaxed “Chill” CPU that occasionally plays a
+              random move.
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {(['Smart', 'Chill'] as const).map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => setDifficulty(d)}
+                  className={[
+                    'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
+                    difficulty === d
+                      ? 'border-fuchsia-400/30 bg-fuchsia-500/15'
+                      : 'border-white/10 bg-white/5 hover:bg-white/10',
+                  ].join(' ')}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
           <div className="text-xs font-semibold text-zinc-300">Tip</div>
           <div className="mt-1 text-sm text-zinc-400">
-            If you want to start, play as <span className="text-zinc-200">X</span>. Swap sides anytime.
+            In 2‑player mode, share the board locally. In CPU mode, play as{' '}
+            <span className="text-zinc-200">X</span> to start, or swap sides anytime.
           </div>
         </div>
       </div>
