@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  @apply bg-zinc-950 text-zinc-100 antialiased;
+}
+
+@layer components {
+  .gt-card {
+    @apply rounded-2xl border border-white/10 bg-white/5 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)] backdrop-blur;
+  }
+  .gt-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-100 transition;
+    @apply hover:bg-white/10 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/70;
+  }
+  .gt-btn-primary {
+    @apply border-fuchsia-400/20 bg-fuchsia-500/20 hover:bg-fuchsia-500/30;
+  }
+  .gt-input {
+    @apply w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-zinc-100 outline-none transition;
+    @apply placeholder:text-zinc-400 focus:ring-2 focus:ring-fuchsia-400/60;
+  }
+}
+
