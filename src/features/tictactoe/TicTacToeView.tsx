@@ -174,7 +174,7 @@ export function TicTacToeView() {
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_360px]">
       <div>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="text-sm font-semibold text-zinc-100">{status}</div>
+          <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{status}</div>
           <div className="flex items-center gap-2">
             <button className="gt-btn" type="button" onClick={() => reset()}>
               New game
@@ -185,7 +185,7 @@ export function TicTacToeView() {
           </div>
         </div>
 
-        <div className="mt-4 overflow-hidden rounded-3xl border border-white/10 bg-black/30 p-4">
+        <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-black/30">
           <div className="grid grid-cols-3 gap-2">
             {board.map((cell, i) => {
               const highlight = w?.line.includes(i) ?? false
@@ -196,13 +196,17 @@ export function TicTacToeView() {
                   onClick={() => clickCell(i)}
                   className={[
                     'aspect-square rounded-2xl border text-4xl font-semibold tracking-tight transition sm:text-5xl',
-                    'border-white/10 bg-white/5 hover:bg-white/10 active:scale-[0.99]',
-                    highlight ? 'border-emerald-400/30 bg-emerald-500/10' : '',
-                    locked || turn !== player || w || draw ? 'cursor-default hover:bg-white/5' : '',
+                    'border-zinc-200/90 bg-zinc-100/80 hover:bg-zinc-200/70 active:scale-[0.99] dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10',
+                    highlight ? 'border-emerald-500/35 bg-emerald-500/10 dark:border-emerald-400/30' : '',
+                    locked || turn !== player || w || draw
+                      ? 'cursor-default hover:bg-zinc-100/80 dark:hover:bg-white/5'
+                      : '',
                   ].join(' ')}
                   aria-label={`Cell ${i + 1}`}
                 >
-                  <span className={cell === 'X' ? 'text-fuchsia-200' : 'text-sky-200'}>{cell ?? ''}</span>
+                  <span className={cell === 'X' ? 'text-fuchsia-700 dark:text-fuchsia-200' : 'text-sky-700 dark:text-sky-200'}>
+                    {cell ?? ''}
+                  </span>
                 </button>
               )
             })}
@@ -213,21 +217,21 @@ export function TicTacToeView() {
           {mode === 'CPU' ? (
             <>
               <span>
-                You: <span className="font-semibold text-zinc-200">{player}</span>
+                You: <span className="font-semibold text-zinc-800 dark:text-zinc-200">{player}</span>
               </span>
               <span>•</span>
               <span>
-                CPU: <span className="font-semibold text-zinc-200">{cpu}</span>
+                CPU: <span className="font-semibold text-zinc-800 dark:text-zinc-200">{cpu}</span>
               </span>
             </>
           ) : (
             <>
               <span>
-                Player 1: <span className="font-semibold text-zinc-200">X</span>
+                Player 1: <span className="font-semibold text-zinc-800 dark:text-zinc-200">X</span>
               </span>
               <span>•</span>
               <span>
-                Player 2: <span className="font-semibold text-zinc-200">O</span>
+                Player 2: <span className="font-semibold text-zinc-800 dark:text-zinc-200">O</span>
               </span>
             </>
           )}
@@ -235,7 +239,7 @@ export function TicTacToeView() {
       </div>
 
       <div className="gt-card p-5 sm:p-6">
-        <div className="text-sm font-semibold text-zinc-100">Mode</div>
+        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Mode</div>
         <div className="mt-2 grid grid-cols-2 gap-2">
           {(['CPU', '2P'] as const).map((m) => (
             <button
@@ -245,8 +249,8 @@ export function TicTacToeView() {
               className={[
                 'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
                 mode === m
-                  ? 'border-fuchsia-400/30 bg-fuchsia-500/15'
-                  : 'border-white/10 bg-white/5 hover:bg-white/10',
+                  ? 'border-fuchsia-400/35 bg-fuchsia-500/12 dark:border-fuchsia-400/30 dark:bg-fuchsia-500/15'
+                  : 'border-zinc-200/90 bg-zinc-50 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10',
               ].join(' ')}
             >
               {m === 'CPU' ? 'Vs CPU' : '2 players'}
@@ -256,8 +260,8 @@ export function TicTacToeView() {
 
         {mode === 'CPU' && (
           <>
-            <div className="mt-6 text-sm font-semibold text-zinc-100">CPU difficulty</div>
-            <div className="mt-2 text-sm text-zinc-400">
+            <div className="mt-6 text-sm font-semibold text-zinc-900 dark:text-zinc-100">CPU difficulty</div>
+            <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
               Choose between a perfect “Smart” CPU (unbeatable) or a more relaxed “Chill” CPU that occasionally plays a
               random move.
             </div>
@@ -271,8 +275,8 @@ export function TicTacToeView() {
                   className={[
                     'rounded-2xl border px-4 py-3 text-sm font-semibold transition',
                     difficulty === d
-                      ? 'border-fuchsia-400/30 bg-fuchsia-500/15'
-                      : 'border-white/10 bg-white/5 hover:bg-white/10',
+                      ? 'border-fuchsia-400/35 bg-fuchsia-500/12 dark:border-fuchsia-400/30 dark:bg-fuchsia-500/15'
+                      : 'border-zinc-200/90 bg-zinc-50 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10',
                   ].join(' ')}
                 >
                   {d}
@@ -282,11 +286,11 @@ export function TicTacToeView() {
           </>
         )}
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
-          <div className="text-xs font-semibold text-zinc-300">Tip</div>
-          <div className="mt-1 text-sm text-zinc-400">
+        <div className="mt-6 rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-white/5">
+          <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Tip</div>
+          <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             In 2‑player mode, share the board locally. In CPU mode, play as{' '}
-            <span className="text-zinc-200">X</span> to start, or swap sides anytime.
+            <span className="text-zinc-800 dark:text-zinc-200">X</span> to start, or swap sides anytime.
           </div>
         </div>
       </div>

@@ -119,25 +119,29 @@ export function TimerView() {
       <div className="gt-card p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="text-sm font-semibold text-zinc-100">Countdown Timer</div>
-            <div className="mt-1 text-xs text-zinc-400">Simple presets, smooth countdown, optional beep.</div>
+            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Countdown Timer</div>
+            <div className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Simple presets, smooth countdown, optional beep.</div>
           </div>
         </div>
 
         <div
           className={[
-            'mt-6 rounded-3xl border bg-black/30 px-6 py-10 text-center transition',
-            done ? 'border-emerald-400/30 ring-2 ring-emerald-400/20' : 'border-white/10',
+            'mt-6 rounded-3xl border bg-zinc-50/90 px-6 py-10 text-center transition dark:bg-black/30',
+            done
+              ? 'border-emerald-500/40 ring-2 ring-emerald-400/25 dark:border-emerald-400/30 dark:ring-emerald-400/20'
+              : 'border-zinc-200/90 dark:border-white/10',
           ].join(' ')}
         >
-          <div className="text-5xl font-semibold tracking-tight text-zinc-100 sm:text-6xl">{pretty}</div>
+          <div className="text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-6xl">{pretty}</div>
           <div className="mt-2 text-xs text-zinc-500">mm:ss</div>
-          {done && <div className="mt-3 text-sm font-semibold text-emerald-200">Time’s up.</div>}
+          {done && (
+            <div className="mt-3 text-sm font-semibold text-emerald-700 dark:text-emerald-200">Time’s up.</div>
+          )}
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="col-span-1">
-            <label className="text-xs font-semibold text-zinc-400">Minutes</label>
+            <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Minutes</label>
             <input
               className="gt-input mt-1"
               value={min}
@@ -147,7 +151,7 @@ export function TimerView() {
             />
           </div>
           <div className="col-span-1">
-            <label className="text-xs font-semibold text-zinc-400">Seconds</label>
+            <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Seconds</label>
             <input
               className="gt-input mt-1"
               value={sec}
@@ -185,15 +189,15 @@ export function TimerView() {
       </div>
 
       <div className="gt-card p-5 sm:p-6">
-        <div className="text-sm font-semibold text-zinc-100">How it works</div>
-        <div className="mt-2 space-y-2 text-sm text-zinc-400">
+        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">How it works</div>
+        <div className="mt-2 space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
           <p>
-            The timer uses <span className="text-zinc-200">requestAnimationFrame</span> for smooth updates and relies on
-            an absolute end timestamp for accuracy.
+            The timer uses <span className="text-zinc-800 dark:text-zinc-200">requestAnimationFrame</span> for smooth
+            updates and relies on an absolute end timestamp for accuracy.
           </p>
           <p>
-            If the browser blocks audio autoplay, click <span className="text-zinc-200">Test sound</span> once to grant
-            permission.
+            If the browser blocks audio autoplay, click <span className="text-zinc-800 dark:text-zinc-200">Test sound</span>{' '}
+            once to grant permission.
           </p>
         </div>
       </div>

@@ -138,26 +138,26 @@ export function CalculatorView() {
       <div className="gt-card p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <div className="text-sm font-semibold text-zinc-100">Calculator</div>
-            <div className="mt-1 text-xs text-zinc-400">Keyboard: Enter to evaluate, Esc to clear.</div>
+            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Calculator</div>
+            <div className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Keyboard: Enter to evaluate, Esc to clear.</div>
           </div>
           <button className="gt-btn" type="button" onClick={() => setHistory([])}>
             Clear history
           </button>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-white/10 bg-black/30 p-4">
+        <div className="mt-4 rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-black/30">
           <input
             ref={inputRef}
             value={expr}
             onKeyDown={onKeyDown}
             onChange={(e) => setExpr(sanitizeExpression(e.target.value))}
-            className="w-full bg-transparent text-right text-2xl font-semibold tracking-tight text-zinc-100 outline-none placeholder:text-zinc-600"
+            className="w-full bg-transparent text-right text-2xl font-semibold tracking-tight text-zinc-900 outline-none placeholder:text-zinc-500 dark:text-zinc-100 dark:placeholder:text-zinc-600"
             placeholder="0"
             inputMode="decimal"
             aria-label="Calculator expression"
           />
-          <div className="mt-1 text-right text-sm text-zinc-400">{resultPreview ? `= ${resultPreview}` : ' '}</div>
+          <div className="mt-1 text-right text-sm text-zinc-600 dark:text-zinc-400">{resultPreview ? `= ${resultPreview}` : ' '}</div>
         </div>
 
         <div className="mt-4 grid grid-cols-4 gap-2">
@@ -172,10 +172,10 @@ export function CalculatorView() {
                 className={[
                   'rounded-2xl border px-3 py-3 text-center text-sm font-semibold transition',
                   isEval
-                    ? 'col-span-1 border-fuchsia-400/25 bg-fuchsia-500/20 hover:bg-fuchsia-500/30'
+                    ? 'col-span-1 border-fuchsia-400/35 bg-fuchsia-500/15 hover:bg-fuchsia-500/25 dark:border-fuchsia-400/25 dark:bg-fuchsia-500/20 dark:hover:bg-fuchsia-500/30'
                     : isFn
-                      ? 'border-white/10 bg-white/5 hover:bg-white/10'
-                      : 'border-white/10 bg-white/0 hover:bg-white/5',
+                      ? 'border-zinc-200/90 bg-zinc-50 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10'
+                      : 'border-zinc-200/90 bg-transparent hover:bg-zinc-100/80 dark:border-white/10 dark:bg-white/0 dark:hover:bg-white/5',
                 ].join(' ')}
               >
                 {b.label}
@@ -186,12 +186,12 @@ export function CalculatorView() {
       </div>
 
       <div className="gt-card p-4 sm:p-5">
-        <div className="text-sm font-semibold text-zinc-100">History</div>
-        <div className="mt-1 text-xs text-zinc-400">Tap an item to reuse it.</div>
+        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">History</div>
+        <div className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Tap an item to reuse it.</div>
 
         <div className="mt-4 space-y-2">
           {history.length === 0 ? (
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-zinc-400">
+            <div className="rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 text-sm text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400">
               No calculations yet.
             </div>
           ) : (
@@ -200,10 +200,10 @@ export function CalculatorView() {
                 key={h.at}
                 type="button"
                 onClick={() => setExpr(h.result === 'Error' ? h.expr : h.result)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-left transition hover:bg-white/10"
+                className="w-full rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-3 text-left transition hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
               >
-                <div className="text-xs text-zinc-400">{h.expr}</div>
-                <div className="mt-0.5 text-sm font-semibold text-zinc-100">{h.result}</div>
+                <div className="text-xs text-zinc-600 dark:text-zinc-400">{h.expr}</div>
+                <div className="mt-0.5 text-sm font-semibold text-zinc-900 dark:text-zinc-100">{h.result}</div>
               </button>
             ))
           )}

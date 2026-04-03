@@ -184,7 +184,7 @@ export function SudokuView() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
             <label className="inline-flex cursor-pointer items-center gap-2">
               <input
                 type="checkbox"
@@ -208,8 +208,10 @@ export function SudokuView() {
 
         <div
           className={[
-            'mt-4 overflow-hidden rounded-3xl border bg-black/30',
-            solved ? 'border-emerald-400/25 ring-2 ring-emerald-400/20' : 'border-white/10',
+            'mt-4 overflow-hidden rounded-3xl border bg-zinc-50/90 dark:bg-black/30',
+            solved
+              ? 'border-emerald-500/35 ring-2 ring-emerald-400/25 dark:border-emerald-400/25 dark:ring-emerald-400/20'
+              : 'border-zinc-200/90 dark:border-white/10',
           ].join(' ')}
         >
           <div className="grid grid-cols-9">
@@ -233,20 +235,28 @@ export function SudokuView() {
                   type="button"
                   onClick={() => setSelected({ r, c })}
                   className={[
-                    'relative aspect-square border border-white/10 p-0 text-center transition',
-                    thickR ? 'border-b-white/25' : '',
-                    thickC ? 'border-r-white/25' : '',
-                    selectedCell ? 'bg-fuchsia-500/20' : related ? 'bg-white/5' : 'bg-transparent hover:bg-white/5',
-                    conflict ? 'ring-2 ring-rose-400/30' : '',
+                    'relative aspect-square border border-zinc-200/90 p-0 text-center transition dark:border-white/10',
+                    thickR ? 'border-b-zinc-300/90 dark:border-b-white/25' : '',
+                    thickC ? 'border-r-zinc-300/90 dark:border-r-white/25' : '',
+                    selectedCell
+                      ? 'bg-fuchsia-500/15 dark:bg-fuchsia-500/20'
+                      : related
+                        ? 'bg-zinc-100/90 dark:bg-white/5'
+                        : 'bg-transparent hover:bg-zinc-100/80 dark:hover:bg-white/5',
+                    conflict ? 'ring-2 ring-rose-400/40 dark:ring-rose-400/30' : '',
                   ].join(' ')}
                   aria-label={`Row ${r + 1} column ${c + 1}`}
                 >
                   {v !== 0 ? (
-                    <span className={givenCell ? 'text-lg font-semibold text-zinc-100' : 'text-lg text-zinc-100'}>
+                    <span
+                      className={
+                        givenCell ? 'text-lg font-semibold text-zinc-900 dark:text-zinc-100' : 'text-lg text-zinc-900 dark:text-zinc-100'
+                      }
+                    >
                       {v}
                     </span>
                   ) : noteSet.size > 0 ? (
-                    <div className="grid h-full w-full grid-cols-3 gap-0 p-1 text-[10px] text-zinc-400">
+                    <div className="grid h-full w-full grid-cols-3 gap-0 p-1 text-[10px] text-zinc-600 dark:text-zinc-400">
                       {Array.from({ length: 9 }).map((__, j) => {
                         const n = j + 1
                         return (
@@ -276,7 +286,9 @@ export function SudokuView() {
                 onClick={() => handleDigit(n)}
                 className={[
                   'rounded-2xl border px-0 py-3 text-sm font-semibold transition',
-                  active ? 'border-fuchsia-400/30 bg-fuchsia-500/15' : 'border-white/10 bg-white/5 hover:bg-white/10',
+                  active
+                    ? 'border-fuchsia-400/35 bg-fuchsia-500/12 dark:border-fuchsia-400/30 dark:bg-fuchsia-500/15'
+                    : 'border-zinc-200/90 bg-zinc-50 hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10',
                 ].join(' ')}
               >
                 {n}
@@ -296,20 +308,24 @@ export function SudokuView() {
       </div>
 
       <div className="gt-card p-5 sm:p-6">
-        <div className="text-sm font-semibold text-zinc-100">Status</div>
-        <div className="mt-2 space-y-3 text-sm text-zinc-400">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs font-semibold text-zinc-300">Mode</div>
+        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Status</div>
+        <div className="mt-2 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+          <div className="rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-white/5">
+            <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Mode</div>
             <div className="mt-1">{noteMode ? 'Notes (pencil marks)' : 'Number entry'}</div>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs font-semibold text-zinc-300">Completion</div>
+          <div className="rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-white/5">
+            <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Completion</div>
             <div className="mt-1">
-              {solved ? <span className="font-semibold text-emerald-200">Solved</span> : 'Keep going'}
+              {solved ? (
+                <span className="font-semibold text-emerald-700 dark:text-emerald-200">Solved</span>
+              ) : (
+                'Keep going'
+              )}
             </div>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs font-semibold text-zinc-300">Controls</div>
+          <div className="rounded-2xl border border-zinc-200/90 bg-zinc-50/90 p-4 dark:border-white/10 dark:bg-white/5">
+            <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Controls</div>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
               <li>Toggle Notes to place small candidates.</li>
               <li>Mistakes highlights conflicts in row/col/box.</li>
